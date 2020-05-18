@@ -1,7 +1,7 @@
 const express = require('express');
 const posts = require('./postDb.js');
 const router = express.Router();
-
+//ask about this
 router.get('/', (req, res) => {
   posts.get(req.query)
   .then(posts => {
@@ -14,7 +14,9 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
+  console.log(req.params.id);
   posts.getById(req.params.id)
+
   .then(post => {
     console.log(post);
     if(post){
@@ -30,7 +32,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id',validatePostId, (req, res) => {
   posts.remove(req.params.id)
   .then(count => {
     if (count > 0) {
@@ -45,7 +47,7 @@ router.delete('/:id', (req, res) => {
   });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id',validatePostId, (req, res) => {
   const changes = req.body;
   posts.update(req.params.id, changes)
   .then(post => {
